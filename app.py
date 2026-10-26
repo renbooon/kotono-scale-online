@@ -145,8 +145,12 @@ with c1:
     st.markdown("#### ルームを作成")
     with st.form("create_form"):
         mins = st.select_slider("制限時間（分）", options=[1,2,3,4,5,7,10,15], value=5)
-        low, high = st.select_slider("数字の範囲", options=[(1,10),(1,50),(1,100),(1,1000)], value=(1,100),
-                                     format_func=lambda x: f"{x[0]}〜{x[1]}")
+        low, high = st.selectbox(
+    "数字の範囲",
+    options=[(1, 10), (1, 50), (1, 100), (1, 1000)],
+    index=2,
+    format_func=lambda x: f"{x[0]}〜{x[1]}"
+)
         create = st.form_submit_button("✨ 新しいルームを作る", use_container_width=True)
     if create:
         code = make_code()
