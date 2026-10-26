@@ -150,7 +150,7 @@ with c1:
     options=[(1, 10), (1, 50), (1, 100), (1, 1000)],
     index=2,
     format_func=lambda x: f"{x[0]}〜{x[1]}"
-　)
+    )
         create = st.form_submit_button("✨ 新しいルームを作る", use_container_width=True)
     if create:
         code = make_code()
