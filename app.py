@@ -94,7 +94,7 @@ def remaining(room):
     try:
         end = datetime.fromisoformat(room["deadline"])
         return max(0, int((end - datetime.now(timezone.utc)).total_seconds()))
-    except Exception:
+        except Exception as e:
         return None
 
 def fmt_time(seconds):
@@ -160,7 +160,7 @@ with c1:
             st.session_state.code = code
             st.rerun()
         else:
-            st.error("ルームを作成できませんでした。FirebaseのURL・認証・ルールを確認してください。")
+            st.error(f"ルームを作成できませんでした: {e}")
 with c2:
     st.markdown("#### ルームに参加")
     with st.form("join_form"):
