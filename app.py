@@ -182,6 +182,49 @@ st.markdown(
         color: #ffffff !important;
     }
 
+    /* Streamlit上部ツールバー：右上のShare・星・編集・GitHub・その他のアイコンを明るく表示 */
+    [data-testid="stHeader"] button,
+    [data-testid="stToolbar"] button,
+    [data-testid="stToolbar"] [role="button"],
+    [data-testid="stStatusWidget"] button {
+        color: #f4f6ff !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+    [data-testid="stHeader"] button svg,
+    [data-testid="stToolbar"] button svg,
+    [data-testid="stToolbar"] [role="button"] svg,
+    [data-testid="stStatusWidget"] button svg {
+        color: #f4f6ff !important;
+        fill: #f4f6ff !important;
+        stroke: #f4f6ff !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        filter: brightness(0) invert(1) !important;
+    }
+    [data-testid="stHeader"] button:hover,
+    [data-testid="stToolbar"] button:hover,
+    [data-testid="stToolbar"] [role="button"]:hover {
+        background-color: #26334f !important;
+    }
+    /* サイドバーが閉じているときの開閉コントロールも最前面に */
+    [data-testid="stSidebarCollapsedControl"],
+    [data-testid="collapsedControl"],
+    [data-testid="stSidebarCollapsedControl"] button,
+    [data-testid="collapsedControl"] button {
+        position: relative !important;
+        z-index: 10000 !important;
+        color: #ffffff !important;
+        background-color: #26334f !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+    [data-testid="stSidebarCollapsedControl"] svg *,
+    [data-testid="collapsedControl"] svg * {
+        stroke: #ffffff !important;
+        fill: #ffffff !important;
+    }
+
     /* 区切り線 */
     hr { border-color: #465577 !important; }
     </style>
