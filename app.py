@@ -231,27 +231,91 @@ if "nickname" not in st.session_state:
     st.session_state.nickname = ""
 if "room_code" not in st.session_state:
     st.session_state.room_code = ""
+if "sidebar_section" not in st.session_state:
+    st.session_state.sidebar_section = "遊び方"
 
 
 # ------------------------------------------------------------
-# サイドバー
+# サイドバー（左上の≡ボタンで開閉できます）
 # ------------------------------------------------------------
 with st.sidebar:
-    st.header("👤 プレイヤー")
+    st.markdown("### 👤 プレイヤー")
     nickname_input = st.text_input(
         "ニックネーム",
         value=st.session_state.nickname,
         max_chars=18,
+        key="sidebar_nickname",
         help=". # $ / [ ] は使用できません。",
     )
     st.session_state.nickname = nickname_input.strip()
     st.caption("同じ名前がいる場合は、少し変えてね。")
     st.divider()
-    st.markdown("### 📘 ルール")
-    st.write("1. それぞれに秘密の数字が配られます。")
-    st.write("2. 数字そのものは言わず、数字の大きさを言葉で表現します。")
-    st.write("3. ヒントとチャットを使って、小さい順を相談します。")
-    st.write("4. ゲームマスターが順番を確定して答え合わせします。")
+    st.markdown("## ☰ メニュー")
+    st.caption("画面左上の三本線から、いつでも開閉できます。")
+
+    if st.button("📘 遊び方", key="menu_howto", use_container_width=True):
+        st.session_state.sidebar_section = "遊び方"
+    if st.button("🏠 ルーム情報", key="menu_room_info", use_container_width=True):
+        st.session_state.sidebar_section = "ルーム情報"
+    if st.button("⚙️ 設定", key="menu_settings", use_container_width=True):
+        st.session_state.sidebar_section = "設定"
+    if st.button("🚪 ゲームから退出する", key="menu_exit", use_container_width=True):
+        st.session_state.sidebar_section = "退出確認"
+
+    st.divider()
+    section = st.session_state.sidebar_section
+
+    if section == "遊び方":
+        st.markdown("### 📘 遊び方")
+        st.write("1. それぞれに秘密の数字が配られます。")
+        st.write("2. 数字そのものは言わず、数字の大きさを言葉で表現します。")
+        st.write("3. ヒントとチャットを使って、小さい順を相談します。")
+        st.write("4. ゲームマスターが順番を確定して答え合わせします。")
+
+    elif section == "ルーム情報":
+        st.markdown("### 🏠 ルーム情報")
+        current_code = st.session_state.room_code
+        if current_code:
+            st.markdown(f"**参加コード：`{current_code}`**")
+            try:
+                current_room = db_read(room_path(current_code))
+                if current_room:
+                    phase_names = {"lobby": "準備中", "playing": "プレイ中", "finished": "終了"}
+                    st.write(f"状態：{phase_names.get(current_room.get('phase'), '不明')}")
+                    st.write(f"ホスト：{current_room.get('host', '不明')}")
+                    current_players = list((current_room.get("players") or {}).keys())
+                    st.write(f"参加人数：{len(current_players)}人")
+                    if current_players:
+                        st.caption("参加者：" + "、".join(current_players))
+                else:
+                    st.info("ルーム情報を取得できませんでした。")
+            except Exception:
+                st.warning("ルーム情報を読み込めません。少し待ってから更新してください。")
+        else:
+            st.info("まだルームに参加していません。")
+
+    elif section == "設定":
+        st.markdown("### ⚙️ 設定")
+        st.write("現在のニックネーム：" + (st.session_state.nickname or "未設定"))
+        st.caption("ニックネームを変更するときは、サイドバー上部の入力欄を編集してください。")
+        st.caption("画面の配色は読みやすいダークテーマに設定されています。")
+
+    elif section == "退出確認":
+        st.markdown("### 🚪 ゲームから退出")
+        if st.session_state.room_code:
+            st.warning("現在のルームから退出して、ルーム選択画面に戻ります。ルーム自体や他の参加者は削除されません。")
+            if st.button("退出する", key="confirm_leave_room", type="primary", use_container_width=True):
+                st.session_state.room_code = ""
+                st.session_state.sidebar_section = "遊び方"
+                st.rerun()
+            if st.button("キャンセル", key="cancel_leave_room", use_container_width=True):
+                st.session_state.sidebar_section = "遊び方"
+                st.rerun()
+        else:
+            st.info("現在、参加中のルームはありません。")
+            if st.button("戻る", key="cancel_leave_no_room", use_container_width=True):
+                st.session_state.sidebar_section = "遊び方"
+                st.rerun()
 
 if not st.session_state.nickname:
     st.info("まず左側でニックネームを入力してください。")
