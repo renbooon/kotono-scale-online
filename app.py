@@ -108,6 +108,25 @@ st.markdown(
     }
     [data-testid="stSidebar"] * { color: #f4f6ff; }
 
+    /* サイドバーが閉じているときの左上ボタンを矢印から≡に変更 */
+    [data-testid="collapsedControl"] svg,
+    button[data-testid="collapsedControl"] svg {
+        display: none !important;
+    }
+    [data-testid="collapsedControl"]::after,
+    button[data-testid="collapsedControl"]::after {
+        content: "☰" !important;
+        display: block !important;
+        color: #f4f6ff !important;
+        font-size: 25px !important;
+        font-weight: 700 !important;
+        line-height: 1 !important;
+    }
+    [data-testid="collapsedControl"],
+    button[data-testid="collapsedControl"] {
+        color: #f4f6ff !important;
+    }
+
     /* 区切り線 */
     hr { border-color: #465577 !important; }
     </style>
