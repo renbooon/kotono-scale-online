@@ -31,6 +31,45 @@ st.markdown(
         background: linear-gradient(140deg, #10162a 0%, #182443 55%, #241b3d 100%);
         color: #f4f6ff;
     }
+
+    /* 画面上部の白いヘッダー・装飾帯をダークテーマに統一 */
+    header[data-testid="stHeader"],
+    [data-testid="stHeader"] {
+        background: rgba(16, 22, 42, 0.98) !important;
+        color: #f4f6ff !important;
+    }
+    [data-testid="stToolbar"],
+    [data-testid="stDecoration"] {
+        background: #10162a !important;
+    }
+    [data-testid="stStatusWidget"] {
+        color: #f4f6ff !important;
+    }
+
+    /* 通常の表示テキストをクリックしたときの文字選択・入力カーソルを抑制。
+       入力欄やボタンなど、操作が必要な部品は対象外。 */
+    [data-testid="stMarkdownContainer"],
+    [data-testid="stMarkdownContainer"] *,
+    [data-testid="stCaptionContainer"],
+    [data-testid="stCaptionContainer"] *,
+    [data-testid="stWidgetLabel"],
+    [data-testid="stWidgetLabel"] *,
+    h1, h2, h3, h4, p, label, li, small {
+        cursor: default !important;
+        user-select: none !important;
+        -webkit-user-select: none !important;
+        caret-color: transparent !important;
+    }
+    /* 入力欄では通常どおり文字入力できるようにする */
+    input, textarea, [contenteditable="true"] {
+        user-select: text !important;
+        -webkit-user-select: text !important;
+        cursor: text !important;
+        caret-color: #ffffff !important;
+    }
+    button, a, [role="button"], [data-baseweb="select"] {
+        cursor: pointer !important;
+    }
     /* 見出し・本文・説明文 */
     h1, h2, h3, h4, p, label, li, span, small,
     [data-testid="stMarkdownContainer"],
