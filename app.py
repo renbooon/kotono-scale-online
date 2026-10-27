@@ -147,38 +147,39 @@ st.markdown(
     }
     [data-testid="stSidebar"] * { color: #f4f6ff; }
 
-    /* サイドバーが閉じているときのボタンを三本線にする。
-       Streamlitのバージョンによってtest idが異なるため複数指定。 */
-    [data-testid="stSidebarCollapsedControl"] svg,
-    button[data-testid="stSidebarCollapsedControl"] svg,
-    [data-testid="collapsedControl"] svg,
-    button[data-testid="collapsedControl"] svg {
-        display: none !important;
-        visibility: hidden !important;
-    }
+    /* サイドバー開閉ボタン：アイコンを隠さず、暗いヘッダー上でも見えるようにする。
+       Streamlit標準のクリック動作とアイコン形状を維持する。 */
     [data-testid="stSidebarCollapsedControl"],
     button[data-testid="stSidebarCollapsedControl"],
     [data-testid="collapsedControl"],
     button[data-testid="collapsedControl"] {
-        color: #f4f6ff !important;
-        min-width: 2.75rem !important;
-        min-height: 2.75rem !important;
-        position: relative !important;
-    }
-    [data-testid="stSidebarCollapsedControl"]::after,
-    button[data-testid="stSidebarCollapsedControl"]::after,
-    [data-testid="collapsedControl"]::after,
-    button[data-testid="collapsedControl"]::after {
-        content: "☰" !important;
-        display: inline-flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        color: #f4f6ff !important;
-        font-family: Arial, sans-serif !important;
-        font-size: 25px !important;
-        font-weight: 700 !important;
-        line-height: 1 !important;
+        opacity: 1 !important;
         visibility: visible !important;
+        color: #ffffff !important;
+        background: rgba(38, 51, 79,  0.95) !important;
+        border: 1px solid #7183ad !important;
+        border-radius: 8px !important;
+        min-width: 2.5rem !important;
+        min-height: 2.5rem !important;
+        z-index: 1001 !important;
+    }
+    [data-testid="stSidebarCollapsedControl"] svg,
+    button[data-testid="stSidebarCollapsedControl"] svg,
+    [data-testid="collapsedControl"] svg,
+    button[data-testid="collapsedControl"] svg {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        color: #ffffff !important;
+        fill: #ffffff !important;
+        stroke: #ffffff !important;
+        filter: brightness(0) invert(1) !important;
+    }
+    [data-testid="stSidebarCollapsedControl"] button,
+    [data-testid="collapsedControl"] button {
+        opacity: 1 !important;
+        visibility: visible !important;
+        color: #ffffff !important;
     }
 
     /* 区切り線 */
