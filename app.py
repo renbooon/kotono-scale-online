@@ -91,11 +91,11 @@ def save_room(code, room):
 def remaining(room):
     if not room.get("deadline"):
         return None
-    try:
-        end = datetime.fromisoformat(room["deadline"])
-        return max(0, int((end - datetime.now(timezone.utc)).total_seconds()))
-        except Exception as e:
-        return None
+   try:
+    end = datetime.fromisoformat(room["deadline"])
+    return max(0, int((end - datetime.now(timezone.utc)).total_seconds()))
+    except Exception:
+    return None
 
 def fmt_time(seconds):
     return f"{seconds//60:02d}:{seconds%60:02d}"
