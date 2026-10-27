@@ -22,11 +22,94 @@ st.markdown(
     """
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap');
-    html, body, [class*="css"] { font-family: 'Noto Sans JP', sans-serif; }
-    .stApp { background: linear-gradient(140deg, #10162a 0%, #182443 55%, #241b3d 100%); }
-    h1, h2, h3, p, label { color: #f4f6ff; }
-    div[data-testid="stMetric"] { background: #222e4d; padding: 14px; border-radius: 14px; border: 1px solid #39496f; }
-    div.stButton > button, div.stFormSubmitButton > button { border-radius: 12px; font-weight: 700; min-height: 2.7rem; }
+
+    /* 全体 */
+    html, body, [class*="css"], [data-testid="stAppViewContainer"] {
+        font-family: 'Noto Sans JP', sans-serif;
+    }
+    .stApp {
+        background: linear-gradient(140deg, #10162a 0%, #182443 55%, #241b3d 100%);
+        color: #f4f6ff;
+    }
+    /* 見出し・本文・説明文 */
+    h1, h2, h3, h4, p, label, li, span, small,
+    [data-testid="stMarkdownContainer"],
+    [data-testid="stCaptionContainer"],
+    [data-testid="stWidgetLabel"],
+    [data-testid="stHelp"] {
+        color: #f4f6ff;
+    }
+    [data-testid="stCaptionContainer"] { color: #cbd5ee !important; }
+
+    /* 入力欄：背景を明るめの紺、文字を白に */
+    .stTextInput input, .stNumberInput input, .stTextArea textarea,
+    [data-baseweb="input"] input, [data-baseweb="textarea"] textarea {
+        background-color: #26334f !important;
+        color: #ffffff !important;
+        -webkit-text-fill-color: #ffffff !important;
+        border: 1px solid #7183ad !important;
+        border-radius: 9px !important;
+        caret-color: #ffffff !important;
+    }
+    input::placeholder, textarea::placeholder {
+        color: #cbd5e1 !important;
+        -webkit-text-fill-color: #cbd5e1 !important;
+        opacity: 1 !important;
+    }
+    /* セレクトボックス */
+    [data-baseweb="select"] > div {
+        background-color: #26334f !important;
+        color: #ffffff !important;
+        border-color: #7183ad !important;
+    }
+    [data-baseweb="select"] *, [role="option"] {
+        color: #ffffff !important;
+    }
+    ul[data-testid="stSelectboxVirtualDropdown"] {
+        background-color: #26334f !important;
+    }
+
+    /* ボタン */
+    div.stButton > button, div.stFormSubmitButton > button {
+        border-radius: 12px;
+        font-weight: 700;
+        min-height: 2.7rem;
+        background-color: #526ee8 !important;
+        color: #ffffff !important;
+        border: 1px solid #8798ff !important;
+    }
+    div.stButton > button:hover, div.stFormSubmitButton > button:hover {
+        background-color: #6b82ff !important;
+        color: #ffffff !important;
+        border-color: #c7d2fe !important;
+    }
+
+    /* メトリクス・カード */
+    div[data-testid="stMetric"] {
+        background: #222e4d;
+        padding: 14px;
+        border-radius: 14px;
+        border: 1px solid #39496f;
+    }
+    [data-testid="stMetricLabel"], [data-testid="stMetricValue"],
+    [data-testid="stMetricDelta"] { color: #ffffff !important; }
+
+    /* チェックボックス・ラジオ・スライダーなど */
+    [data-testid="stCheckbox"] label, [data-testid="stRadio"] label,
+    [data-testid="stSlider"] label, [data-testid="stSelectSlider"] label {
+        color: #f4f6ff !important;
+    }
+    [data-testid="stAlert"] { color: #172033; }
+
+    /* サイドバー */
+    [data-testid="stSidebar"] {
+        background-color: #151d32;
+        border-right: 1px solid #303d5c;
+    }
+    [data-testid="stSidebar"] * { color: #f4f6ff; }
+
+    /* 区切り線 */
+    hr { border-color: #465577 !important; }
     </style>
     """,
     unsafe_allow_html=True,
