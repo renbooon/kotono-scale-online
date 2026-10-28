@@ -23,45 +23,82 @@ st.markdown(
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap');
     html, body, [class*="css"] { font-family: 'Noto Sans JP', sans-serif; }
-    .stApp { background: linear-gradient(140deg, #10162a 0%, #182443 55%, #241b3d 100%); }
 
-    /* 上部バーは黒系、サイドバーは少し明るいチャコールで読みやすく */
-    header[data-testid="stHeader"] { background: #111111 !important; }
-    section[data-testid="stSidebar"],
-    section[data-testid="stSidebar"] > div,
-    [data-testid="stSidebarContent"] { background: #202431 !important; }
+    /* メイン画面：暗めの背景に、本文は明るい文字で */
+    .stApp { background: linear-gradient(140deg, #111827 0%, #1b2942 58%, #29213f 100%); }
+    .stApp, .stApp p, .stApp label, .stApp [data-testid="stMarkdownContainer"] { color: #f5f7ff; }
+    h1, h2, h3, h4 { color: #ffffff !important; letter-spacing: 0.01em; }
+    [data-testid="stCaptionContainer"] { color: #c8d0e0 !important; }
 
-    /* サイドバー開閉ボタンを見失わないよう、ボタンと矢印を明るく表示 */
+    /* 上部バーは黒。標準のメニューボタン自体は隠さず、形状も変更しない */
+    header[data-testid="stHeader"] { background: #090b10 !important; }
     header[data-testid="stHeader"] button,
-    [data-testid="stSidebarCollapsedControl"] button,
-    section[data-testid="stSidebar"] button {
-        color: #ffffff !important;
-        background-color: #303644 !important;
-        border: 1px solid #596273 !important;
+    [data-testid="stSidebarCollapsedControl"] button {
         opacity: 1 !important;
+        color: #ffffff !important;
     }
-    header[data-testid="stHeader"] button svg,
+    [data-testid="stSidebarCollapsedControl"] button {
+        background: #39465d !important;
+        border: 2px solid #a9b8d3 !important;
+        border-radius: 8px !important;
+        min-width: 2.5rem !important;
+        min-height: 2.5rem !important;
+        box-shadow: 0 0 0 2px rgba(8, 12, 20, 0.6) !important;
+    }
     [data-testid="stSidebarCollapsedControl"] button svg,
-    section[data-testid="stSidebar"] button svg {
+    header[data-testid="stHeader"] button svg {
         color: #ffffff !important;
         fill: #ffffff !important;
         stroke: #ffffff !important;
         opacity: 1 !important;
     }
 
-    /* 本文とサイドバーの文字を十分なコントラストで表示 */
-    h1, h2, h3, p, label,
+    /* サイドバーは本文より少し明るいチャコールに */
+    section[data-testid="stSidebar"],
+    section[data-testid="stSidebar"] > div,
+    [data-testid="stSidebarContent"] { background: #242c3b !important; }
+    section[data-testid="stSidebar"] p,
+    section[data-testid="stSidebar"] label,
     section[data-testid="stSidebar"] [data-testid="stMarkdownContainer"],
-    section[data-testid="stSidebar"] [data-testid="stWidgetLabel"],
-    section[data-testid="stSidebar"] small { color: #f4f6ff !important; }
-    section[data-testid="stSidebar"] input,
-    section[data-testid="stSidebar"] textarea,
-    section[data-testid="stSidebar"] [data-baseweb="select"] > div {
-        color: #f4f6ff !important;
-        background-color: #303644 !important;
+    section[data-testid="stSidebar"] [data-testid="stWidgetLabel"] { color: #f7f8fc !important; }
+
+    /* 入力欄：背景と文字色を明確に分ける */
+    .stApp input, .stApp textarea,
+    .stApp [data-baseweb="select"] > div {
+        color: #ffffff !important;
+        background-color: #202a3b !important;
+        border-color: #73829b !important;
     }
-    div[data-testid="stMetric"] { background: #222e4d; padding: 14px; border-radius: 14px; border: 1px solid #39496f; }
-    div.stButton > button, div.stFormSubmitButton > button { border-radius: 12px; font-weight: 700; min-height: 2.7rem; }
+    .stApp input::placeholder, .stApp textarea::placeholder { color: #c2cada !important; opacity: 1 !important; }
+    .stApp [data-baseweb="select"] *, .stApp [role="option"] { color: #ffffff !important; }
+
+    /* ボタン：背景と文字のコントラストを確保 */
+    div.stButton > button, div.stFormSubmitButton > button {
+        border-radius: 12px !important;
+        font-weight: 700 !important;
+        min-height: 2.8rem !important;
+        color: #ffffff !important;
+        background: #354764 !important;
+        border: 1px solid #8fa6ca !important;
+    }
+    div.stButton > button:hover, div.stFormSubmitButton > button:hover {
+        background: #486187 !important;
+        border-color: #d0def5 !important;
+    }
+    div.stButton > button:disabled, div.stFormSubmitButton > button:disabled {
+        color: #c5ccda !important;
+        background: #343b49 !important;
+        border-color: #596273 !important;
+    }
+    div[data-testid="stMetric"] {
+        background: #222f47 !important;
+        padding: 14px !important;
+        border-radius: 14px !important;
+        border: 1px solid #60779e !important;
+    }
+    div[data-testid="stMetric"] label,
+    div[data-testid="stMetric"] [data-testid="stMetricValue"] { color: #ffffff !important; }
+    [data-testid="stVerticalBlockBorderWrapper"] { border-color: #66748d !important; }
     </style>
     """,
     unsafe_allow_html=True,
@@ -232,6 +269,11 @@ with create_col:
             index=2,
             format_func=lambda item: f"{item[0]}〜{item[1]}",
         )
+        host_as_spectator = st.checkbox(
+            "ゲームマスターとして参加（自分はプレイヤーに含めない）",
+            value=False,
+            help="チェックすると、ルーム作成者はゲームに参加せず、進行・答え合わせだけを行います。",
+        )
         create_clicked = st.form_submit_button("✨ 新しいルームを作る", use_container_width=True)
 
     if create_clicked:
@@ -247,11 +289,13 @@ with create_col:
                 raise RuntimeError("空いているルームコードを作成できませんでした。もう一度お試しください。")
 
             room = create_room_data(nickname, minutes, low, high)
-            room["players"][nickname] = {
-                "number": random.randint(low, high),
-                "hint": "",
-                "joined": timestamp(),
-            }
+            # ゲームマスターが観戦・進行専任の場合、プレイヤー一覧には追加しない。
+            if not host_as_spectator:
+                room["players"][nickname] = {
+                    "number": random.randint(low, high),
+                    "hint": "",
+                    "joined": timestamp(),
+                }
             db_write(room_path(code), room)
             st.session_state.room_code = code
             st.rerun()
@@ -331,6 +375,8 @@ st.caption("他の人の操作を反映するには、画面下の「画面を�
 if room.get("phase") == "lobby":
     st.markdown("### 👥 参加プレイヤー")
     st.write("、".join(players.keys()) if players else "まだ参加者はいません")
+    if is_host and nickname not in players:
+        st.info("あなたはゲームマスターです。プレイヤーには含まれず、ゲーム開始と答え合わせを担当します。")
 
     if is_host:
         settings = room.get("settings", {})
