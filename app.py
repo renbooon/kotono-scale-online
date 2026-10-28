@@ -23,7 +23,7 @@ st.markdown(
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap');
 
-    /* 全体 */
+    /* 全体の配色 */
     html, body, [class*="css"], [data-testid="stAppViewContainer"] {
         font-family: 'Noto Sans JP', sans-serif;
     }
@@ -31,23 +31,53 @@ st.markdown(
         background: linear-gradient(140deg, #10162a 0%, #182443 55%, #241b3d 100%);
         color: #f4f6ff;
     }
-
-    /* 画面上部の白いヘッダー・装飾帯をダークテーマに統一 */
-    header[data-testid="stHeader"],
-    [data-testid="stHeader"] {
-        background: rgba(16, 22, 42, 0.98) !important;
-        color: #f4f6ff !important;
+    header[data-testid="stHeader"] {
+        background: #10162a !important;
     }
-    [data-testid="stToolbar"],
     [data-testid="stDecoration"] {
         background: #10162a !important;
     }
-    [data-testid="stStatusWidget"] {
-        color: #f4f6ff !important;
+
+    /* 右上のStreamlitツールバー（Share・その他メニューなど）は非表示 */
+    [data-testid="stToolbar"] {
+        display: none !important;
+        visibility: hidden !important;
     }
 
-    /* 通常の表示テキストをクリックしたときの文字選択・入力カーソルを抑制。
-       入力欄やボタンなど、操作が必要な部品は対象外。 */
+    /* 左上のサイドバー開閉ボタンだけを表示。標準の矢印アイコンと動作を維持 */
+    [data-testid="stSidebarCollapsedControl"],
+    [data-testid="collapsedControl"] {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        z-index: 99999 !important;
+        background: #26334f !important;
+        border: 1px solid #7183ad !important;
+        border-radius: 8px !important;
+    }
+    [data-testid="stSidebarCollapsedControl"] button,
+    [data-testid="collapsedControl"] button {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        color: #ffffff !important;
+        background: #26334f !important;
+        border: none !important;
+        min-width: 2.5rem !important;
+        min-height: 2.5rem !important;
+    }
+    [data-testid="stSidebarCollapsedControl"] svg,
+    [data-testid="stSidebarCollapsedControl"] svg *,
+    [data-testid="collapsedControl"] svg,
+    [data-testid="collapsedControl"] svg * {
+        visibility: visible !important;
+        opacity: 1 !important;
+        stroke: #ffffff !important;
+        fill: #ffffff !important;
+        color: #ffffff !important;
+    }
+
+    /* 通常テキストの誤選択を防止。入力欄は対象外 */
     [data-testid="stMarkdownContainer"],
     [data-testid="stMarkdownContainer"] *,
     [data-testid="stCaptionContainer"],
@@ -60,7 +90,6 @@ st.markdown(
         -webkit-user-select: none !important;
         caret-color: transparent !important;
     }
-    /* 入力欄では通常どおり文字入力できるようにする */
     input, textarea, [contenteditable="true"] {
         user-select: text !important;
         -webkit-user-select: text !important;
@@ -70,7 +99,8 @@ st.markdown(
     button, a, [role="button"], [data-baseweb="select"] {
         cursor: pointer !important;
     }
-    /* 見出し・本文・説明文 */
+
+    /* テキスト */
     h1, h2, h3, h4, p, label, li, span, small,
     [data-testid="stMarkdownContainer"],
     [data-testid="stCaptionContainer"],
@@ -80,7 +110,7 @@ st.markdown(
     }
     [data-testid="stCaptionContainer"] { color: #cbd5ee !important; }
 
-    /* 入力欄：背景を明るめの紺、文字を白に */
+    /* 入力欄 */
     .stTextInput input, .stNumberInput input, .stTextArea textarea,
     [data-baseweb="input"] input, [data-baseweb="textarea"] textarea {
         background-color: #26334f !important;
@@ -95,20 +125,15 @@ st.markdown(
         -webkit-text-fill-color: #cbd5e1 !important;
         opacity: 1 !important;
     }
-    /* セレクトボックス */
     [data-baseweb="select"] > div {
         background-color: #26334f !important;
         color: #ffffff !important;
         border-color: #7183ad !important;
     }
-    [data-baseweb="select"] *, [role="option"] {
-        color: #ffffff !important;
-    }
-    ul[data-testid="stSelectboxVirtualDropdown"] {
-        background-color: #26334f !important;
-    }
+    [data-baseweb="select"] *, [role="option"] { color: #ffffff !important; }
+    ul[data-testid="stSelectboxVirtualDropdown"] { background-color: #26334f !important; }
 
-    /* ボタン */
+    /* アプリ内のボタン */
     div.stButton > button, div.stFormSubmitButton > button {
         border-radius: 12px;
         font-weight: 700;
@@ -123,7 +148,7 @@ st.markdown(
         border-color: #c7d2fe !important;
     }
 
-    /* メトリクス・カード */
+    /* メトリクス */
     div[data-testid="stMetric"] {
         background: #222e4d;
         padding: 14px;
@@ -132,8 +157,6 @@ st.markdown(
     }
     [data-testid="stMetricLabel"], [data-testid="stMetricValue"],
     [data-testid="stMetricDelta"] { color: #ffffff !important; }
-
-    /* チェックボックス・ラジオ・スライダーなど */
     [data-testid="stCheckbox"] label, [data-testid="stRadio"] label,
     [data-testid="stSlider"] label, [data-testid="stSelectSlider"] label {
         color: #f4f6ff !important;
@@ -146,68 +169,6 @@ st.markdown(
         border-right: 1px solid #303d5c;
     }
     [data-testid="stSidebar"] * { color: #f4f6ff; }
-
-    /* サイドバー開閉ボタン：アイコンを隠さず、暗いヘッダー上でも見えるようにする。
-       Streamlit標準のクリック動作とアイコン形状を維持する。 */
-    [data-testid="stSidebarCollapsedControl"],
-    button[data-testid="stSidebarCollapsedControl"],
-    [data-testid="collapsedControl"],
-    button[data-testid="collapsedControl"] {
-        opacity: 1 !important;
-        visibility: visible !important;
-        color: #ffffff !important;
-        background: rgba(38, 51, 79,  0.95) !important;
-        border: 1px solid #7183ad !important;
-        border-radius: 8px !important;
-        min-width: 2.5rem !important;
-        min-height: 2.5rem !important;
-        z-index: 1001 !important;
-    }
-    [data-testid="stSidebarCollapsedControl"] svg,
-    button[data-testid="stSidebarCollapsedControl"] svg,
-    [data-testid="collapsedControl"] svg,
-    button[data-testid="collapsedControl"] svg {
-        display: block !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-        color: #ffffff !important;
-        fill: #ffffff !important;
-        stroke: #ffffff !important;
-        filter: brightness(0) invert(1) !important;
-    }
-    [data-testid="stSidebarCollapsedControl"] button,
-    [data-testid="collapsedControl"] button {
-        opacity: 1 !important;
-        visibility: visible !important;
-        color: #ffffff !important;
-    }
-
-    /* 右上の標準ツールバーはStreamlit標準の色に任せ、左上の開閉ボタンだけ白くする */
-    [data-testid="stHeader"] button:not([data-testid="stSidebarCollapsedControl"]),
-    [data-testid="stToolbar"] button:not([data-testid="stSidebarCollapsedControl"]),
-    [data-testid="stToolbar"] [role="button"]:not([data-testid="stSidebarCollapsedControl"]) {
-        filter: none !important;
-    }
-
-    /* サイドバーが閉じているときの開閉コントロールも最前面に */
-    [data-testid="stSidebarCollapsedControl"],
-    [data-testid="collapsedControl"],
-    [data-testid="stSidebarCollapsedControl"] button,
-    [data-testid="collapsedControl"] button {
-        position: relative !important;
-        z-index: 10000 !important;
-        color: #ffffff !important;
-        background-color: #26334f !important;
-        opacity: 1 !important;
-        visibility: visible !important;
-    }
-    [data-testid="stSidebarCollapsedControl"] svg *,
-    [data-testid="collapsedControl"] svg * {
-        stroke: #ffffff !important;
-        fill: #ffffff !important;
-    }
-
-    /* 区切り線 */
     hr { border-color: #465577 !important; }
     </style>
     """,
