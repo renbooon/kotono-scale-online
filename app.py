@@ -22,154 +22,11 @@ st.markdown(
     """
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap');
-
-    /* 全体の配色 */
-    html, body, [class*="css"], [data-testid="stAppViewContainer"] {
-        font-family: 'Noto Sans JP', sans-serif;
-    }
-    .stApp {
-        background: linear-gradient(140deg, #10162a 0%, #182443 55%, #241b3d 100%);
-        color: #f4f6ff;
-    }
-    header[data-testid="stHeader"] {
-        background: #10162a !important;
-    }
-    [data-testid="stDecoration"] {
-        background: #10162a !important;
-    }
-
-    /* 右上のStreamlitツールバー（Share・その他メニューなど）は非表示 */
-    [data-testid="stToolbar"] {
-        display: none !important;
-        visibility: hidden !important;
-    }
-
-    /* 左上のサイドバー開閉ボタンだけを表示。標準の矢印アイコンと動作を維持 */
-    [data-testid="stSidebarCollapsedControl"],
-    [data-testid="collapsedControl"] {
-        display: flex !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-        z-index: 99999 !important;
-        background: #26334f !important;
-        border: 1px solid #7183ad !important;
-        border-radius: 8px !important;
-    }
-    [data-testid="stSidebarCollapsedControl"] button,
-    [data-testid="collapsedControl"] button {
-        display: flex !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-        color: #ffffff !important;
-        background: #26334f !important;
-        border: none !important;
-        min-width: 2.5rem !important;
-        min-height: 2.5rem !important;
-    }
-    [data-testid="stSidebarCollapsedControl"] svg,
-    [data-testid="stSidebarCollapsedControl"] svg *,
-    [data-testid="collapsedControl"] svg,
-    [data-testid="collapsedControl"] svg * {
-        visibility: visible !important;
-        opacity: 1 !important;
-        stroke: #ffffff !important;
-        fill: #ffffff !important;
-        color: #ffffff !important;
-    }
-
-    /* 通常テキストの誤選択を防止。入力欄は対象外 */
-    [data-testid="stMarkdownContainer"],
-    [data-testid="stMarkdownContainer"] *,
-    [data-testid="stCaptionContainer"],
-    [data-testid="stCaptionContainer"] *,
-    [data-testid="stWidgetLabel"],
-    [data-testid="stWidgetLabel"] *,
-    h1, h2, h3, h4, p, label, li, small {
-        cursor: default !important;
-        user-select: none !important;
-        -webkit-user-select: none !important;
-        caret-color: transparent !important;
-    }
-    input, textarea, [contenteditable="true"] {
-        user-select: text !important;
-        -webkit-user-select: text !important;
-        cursor: text !important;
-        caret-color: #ffffff !important;
-    }
-    button, a, [role="button"], [data-baseweb="select"] {
-        cursor: pointer !important;
-    }
-
-    /* テキスト */
-    h1, h2, h3, h4, p, label, li, span, small,
-    [data-testid="stMarkdownContainer"],
-    [data-testid="stCaptionContainer"],
-    [data-testid="stWidgetLabel"],
-    [data-testid="stHelp"] {
-        color: #f4f6ff;
-    }
-    [data-testid="stCaptionContainer"] { color: #cbd5ee !important; }
-
-    /* 入力欄 */
-    .stTextInput input, .stNumberInput input, .stTextArea textarea,
-    [data-baseweb="input"] input, [data-baseweb="textarea"] textarea {
-        background-color: #26334f !important;
-        color: #ffffff !important;
-        -webkit-text-fill-color: #ffffff !important;
-        border: 1px solid #7183ad !important;
-        border-radius: 9px !important;
-        caret-color: #ffffff !important;
-    }
-    input::placeholder, textarea::placeholder {
-        color: #cbd5e1 !important;
-        -webkit-text-fill-color: #cbd5e1 !important;
-        opacity: 1 !important;
-    }
-    [data-baseweb="select"] > div {
-        background-color: #26334f !important;
-        color: #ffffff !important;
-        border-color: #7183ad !important;
-    }
-    [data-baseweb="select"] *, [role="option"] { color: #ffffff !important; }
-    ul[data-testid="stSelectboxVirtualDropdown"] { background-color: #26334f !important; }
-
-    /* アプリ内のボタン */
-    div.stButton > button, div.stFormSubmitButton > button {
-        border-radius: 12px;
-        font-weight: 700;
-        min-height: 2.7rem;
-        background-color: #526ee8 !important;
-        color: #ffffff !important;
-        border: 1px solid #8798ff !important;
-    }
-    div.stButton > button:hover, div.stFormSubmitButton > button:hover {
-        background-color: #6b82ff !important;
-        color: #ffffff !important;
-        border-color: #c7d2fe !important;
-    }
-
-    /* メトリクス */
-    div[data-testid="stMetric"] {
-        background: #222e4d;
-        padding: 14px;
-        border-radius: 14px;
-        border: 1px solid #39496f;
-    }
-    [data-testid="stMetricLabel"], [data-testid="stMetricValue"],
-    [data-testid="stMetricDelta"] { color: #ffffff !important; }
-    [data-testid="stCheckbox"] label, [data-testid="stRadio"] label,
-    [data-testid="stSlider"] label, [data-testid="stSelectSlider"] label {
-        color: #f4f6ff !important;
-    }
-    [data-testid="stAlert"] { color: #172033; }
-
-    /* サイドバー */
-    [data-testid="stSidebar"] {
-        background-color: #151d32;
-        border-right: 1px solid #303d5c;
-    }
-    [data-testid="stSidebar"] * { color: #f4f6ff; }
-    hr { border-color: #465577 !important; }
+    html, body, [class*="css"] { font-family: 'Noto Sans JP', sans-serif; }
+    .stApp { background: linear-gradient(140deg, #10162a 0%, #182443 55%, #241b3d 100%); }
+    h1, h2, h3, p, label { color: #f4f6ff; }
+    div[data-testid="stMetric"] { background: #222e4d; padding: 14px; border-radius: 14px; border: 1px solid #39496f; }
+    div.stButton > button, div.stFormSubmitButton > button { border-radius: 12px; font-weight: 700; min-height: 2.7rem; }
     </style>
     """,
     unsafe_allow_html=True,
@@ -291,91 +148,27 @@ if "nickname" not in st.session_state:
     st.session_state.nickname = ""
 if "room_code" not in st.session_state:
     st.session_state.room_code = ""
-if "sidebar_section" not in st.session_state:
-    st.session_state.sidebar_section = "遊び方"
 
 
 # ------------------------------------------------------------
-# サイドバー（左上の≡ボタンで開閉できます）
+# サイドバー
 # ------------------------------------------------------------
 with st.sidebar:
-    st.markdown("### 👤 プレイヤー")
+    st.header("👤 プレイヤー")
     nickname_input = st.text_input(
         "ニックネーム",
         value=st.session_state.nickname,
         max_chars=18,
-        key="sidebar_nickname",
         help=". # $ / [ ] は使用できません。",
     )
     st.session_state.nickname = nickname_input.strip()
     st.caption("同じ名前がいる場合は、少し変えてね。")
     st.divider()
-    st.markdown("## ☰ メニュー")
-    st.caption("画面左上の三本線から、いつでも開閉できます。")
-
-    if st.button("📘 遊び方", key="menu_howto", use_container_width=True):
-        st.session_state.sidebar_section = "遊び方"
-    if st.button("🏠 ルーム情報", key="menu_room_info", use_container_width=True):
-        st.session_state.sidebar_section = "ルーム情報"
-    if st.button("⚙️ 設定", key="menu_settings", use_container_width=True):
-        st.session_state.sidebar_section = "設定"
-    if st.button("🚪 ゲームから退出する", key="menu_exit", use_container_width=True):
-        st.session_state.sidebar_section = "退出確認"
-
-    st.divider()
-    section = st.session_state.sidebar_section
-
-    if section == "遊び方":
-        st.markdown("### 📘 遊び方")
-        st.write("1. それぞれに秘密の数字が配られます。")
-        st.write("2. 数字そのものは言わず、数字の大きさを言葉で表現します。")
-        st.write("3. ヒントとチャットを使って、小さい順を相談します。")
-        st.write("4. ゲームマスターが順番を確定して答え合わせします。")
-
-    elif section == "ルーム情報":
-        st.markdown("### 🏠 ルーム情報")
-        current_code = st.session_state.room_code
-        if current_code:
-            st.markdown(f"**参加コード：`{current_code}`**")
-            try:
-                current_room = db_read(room_path(current_code))
-                if current_room:
-                    phase_names = {"lobby": "準備中", "playing": "プレイ中", "finished": "終了"}
-                    st.write(f"状態：{phase_names.get(current_room.get('phase'), '不明')}")
-                    st.write(f"ホスト：{current_room.get('host', '不明')}")
-                    current_players = list((current_room.get("players") or {}).keys())
-                    st.write(f"参加人数：{len(current_players)}人")
-                    if current_players:
-                        st.caption("参加者：" + "、".join(current_players))
-                else:
-                    st.info("ルーム情報を取得できませんでした。")
-            except Exception:
-                st.warning("ルーム情報を読み込めません。少し待ってから更新してください。")
-        else:
-            st.info("まだルームに参加していません。")
-
-    elif section == "設定":
-        st.markdown("### ⚙️ 設定")
-        st.write("現在のニックネーム：" + (st.session_state.nickname or "未設定"))
-        st.caption("ニックネームを変更するときは、サイドバー上部の入力欄を編集してください。")
-        st.caption("画面の配色は読みやすいダークテーマに設定されています。")
-
-    elif section == "退出確認":
-        st.markdown("### 🚪 ゲームから退出")
-        if st.session_state.room_code:
-            st.warning("現在のルームから退出して、ルーム選択画面に戻ります。ルーム自体や他の参加者は削除されません。")
-            if st.button("退出する", key="confirm_leave_room", type="primary", use_container_width=True):
-                st.session_state.room_code = ""
-                st.session_state.sidebar_section = "遊び方"
-                st.rerun()
-            if st.button("キャンセル", key="cancel_leave_room", use_container_width=True):
-                st.session_state.sidebar_section = "遊び方"
-                st.rerun()
-        else:
-            st.info("現在、参加中のルームはありません。")
-            if st.button("戻る", key="cancel_leave_no_room", use_container_width=True):
-                st.session_state.sidebar_section = "遊び方"
-                st.rerun()
+    st.markdown("### 📘 ルール")
+    st.write("1. それぞれに秘密の数字が配られます。")
+    st.write("2. 数字そのものは言わず、数字の大きさを言葉で表現します。")
+    st.write("3. ヒントとチャットを使って、小さい順を相談します。")
+    st.write("4. ゲームマスターが順番を確定して答え合わせします。")
 
 if not st.session_state.nickname:
     st.info("まず左側でニックネームを入力してください。")
