@@ -24,12 +24,42 @@ st.markdown(
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap');
     html, body, [class*="css"] { font-family: 'Noto Sans JP', sans-serif; }
     .stApp { background: linear-gradient(140deg, #10162a 0%, #182443 55%, #241b3d 100%); }
-    /* 上部バーとサイドメニューは黒で統一。標準の開閉矢印は隠さない */
-    header[data-testid="stHeader"] { background: #000000 !important; }
-    section[data-testid="stSidebar"] { background: #000000 !important; }
-    section[data-testid="stSidebar"] > div { background: #000000 !important; }
-    [data-testid="stSidebarContent"] { background: #000000 !important; }
-    h1, h2, h3, p, label { color: #f4f6ff; }
+
+    /* 上部バーは黒系、サイドバーは少し明るいチャコールで読みやすく */
+    header[data-testid="stHeader"] { background: #111111 !important; }
+    section[data-testid="stSidebar"],
+    section[data-testid="stSidebar"] > div,
+    [data-testid="stSidebarContent"] { background: #202431 !important; }
+
+    /* サイドバー開閉ボタンを見失わないよう、ボタンと矢印を明るく表示 */
+    header[data-testid="stHeader"] button,
+    [data-testid="stSidebarCollapsedControl"] button,
+    section[data-testid="stSidebar"] button {
+        color: #ffffff !important;
+        background-color: #303644 !important;
+        border: 1px solid #596273 !important;
+        opacity: 1 !important;
+    }
+    header[data-testid="stHeader"] button svg,
+    [data-testid="stSidebarCollapsedControl"] button svg,
+    section[data-testid="stSidebar"] button svg {
+        color: #ffffff !important;
+        fill: #ffffff !important;
+        stroke: #ffffff !important;
+        opacity: 1 !important;
+    }
+
+    /* 本文とサイドバーの文字を十分なコントラストで表示 */
+    h1, h2, h3, p, label,
+    section[data-testid="stSidebar"] [data-testid="stMarkdownContainer"],
+    section[data-testid="stSidebar"] [data-testid="stWidgetLabel"],
+    section[data-testid="stSidebar"] small { color: #f4f6ff !important; }
+    section[data-testid="stSidebar"] input,
+    section[data-testid="stSidebar"] textarea,
+    section[data-testid="stSidebar"] [data-baseweb="select"] > div {
+        color: #f4f6ff !important;
+        background-color: #303644 !important;
+    }
     div[data-testid="stMetric"] { background: #222e4d; padding: 14px; border-radius: 14px; border: 1px solid #39496f; }
     div.stButton > button, div.stFormSubmitButton > button { border-radius: 12px; font-weight: 700; min-height: 2.7rem; }
     </style>
