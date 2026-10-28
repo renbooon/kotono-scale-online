@@ -24,6 +24,11 @@ st.markdown(
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap');
     html, body, [class*="css"] { font-family: 'Noto Sans JP', sans-serif; }
     .stApp { background: linear-gradient(140deg, #10162a 0%, #182443 55%, #241b3d 100%); }
+    /* 上部バーとサイドメニューは黒で統一。標準の開閉矢印は隠さない */
+    header[data-testid="stHeader"] { background: #000000 !important; }
+    section[data-testid="stSidebar"] { background: #000000 !important; }
+    section[data-testid="stSidebar"] > div { background: #000000 !important; }
+    [data-testid="stSidebarContent"] { background: #000000 !important; }
     h1, h2, h3, p, label { color: #f4f6ff; }
     div[data-testid="stMetric"] { background: #222e4d; padding: 14px; border-radius: 14px; border: 1px solid #39496f; }
     div.stButton > button, div.stFormSubmitButton > button { border-radius: 12px; font-weight: 700; min-height: 2.7rem; }
