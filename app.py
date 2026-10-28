@@ -172,9 +172,10 @@ def timestamp() -> str:
     return utc_now().isoformat()
 
 
-def create_room_data(host_name: str, minutes: int, low: int, high: int) -> dict:
+def create_room_data(host_name: str, minutes: int, low: int, high: int, mode: str = "host_plays") -> dict:
     return {
         "host": host_name,
+        "mode": mode,
         "phase": "lobby",
         "created": timestamp(),
         "settings": {"minutes": int(minutes), "low": int(low), "high": int(high)},
@@ -269,10 +270,11 @@ with create_col:
             index=2,
             format_func=lambda item: f"{item[0]}〜{item[1]}",
         )
-        host_as_spectator = st.checkbox(
-            "ゲームマスターとして参加（自分はプレイヤーに含めない）",
-            value=False,
-            help="チェックすると、ルーム作成者はゲームに参加せず、進行・答え合わせだけを行います。",
+        room_mode_label = st.radio(
+            "遊び方",
+            options=["自分も参加する", "友達だけで遊ぶ"],
+            index=0,
+            help="「友達だけで遊ぶ」では、作成者はプレイヤーに含まれず、参加した友達がゲーム開始・答え合わせを行えます。",
         )
         create_clicked = st.form_submit_button("✨ 新しいルームを作る", use_container_width=True)
 
@@ -288,9 +290,10 @@ with create_col:
             if not code:
                 raise RuntimeError("空いているルームコードを作成できませんでした。もう一度お試しください。")
 
-            room = create_room_data(nickname, minutes, low, high)
-            # ゲームマスターが観戦・進行専任の場合、プレイヤー一覧には追加しない。
-            if not host_as_spectator:
+            room_mode = "friends_only" if room_mode_label == "友達だけで遊ぶ" else "host_plays"
+            room = create_room_data(nickname, minutes, low, high, room_mode)
+            # 友達だけで遊ぶ場合、作成者はプレイヤー一覧に追加しない。
+            if room_mode != "friends_only":
                 room["players"][nickname] = {
                     "number": random.randint(low, high),
                     "hint": "",
@@ -358,6 +361,9 @@ if not room:
 
 players = room.get("players", {}) or {}
 is_host = room.get("host") == nickname
+room_mode = room.get("mode", "host_plays")
+# 通常モードは作成者が進行役。友達だけモードは参加プレイヤー全員が進行操作できる。
+can_manage_game = is_host if room_mode != "friends_only" else nickname in players
 
 header_a, header_b, header_c = st.columns([2, 1, 1])
 header_a.markdown(f"### ルームコード：`{room_code}`")
@@ -375,10 +381,10 @@ st.caption("他の人の操作を反映するには、画面下の「画面を�
 if room.get("phase") == "lobby":
     st.markdown("### 👥 参加プレイヤー")
     st.write("、".join(players.keys()) if players else "まだ参加者はいません")
-    if is_host and nickname not in players:
-        st.info("あなたはゲームマスターです。プレイヤーには含まれず、ゲーム開始と答え合わせを担当します。")
+    if room_mode == "friends_only" and is_host and nickname not in players:
+        st.info("友達だけで遊ぶモードです。あなたが退出しても、参加プレイヤーがゲームを開始・進行できます。")
 
-    if is_host:
+    if can_manage_game:
         settings = room.get("settings", {})
         st.markdown("#### ゲーム設定")
         st.write(f"数字の範囲：{settings.get('low')}〜{settings.get('high')} ／ 制限時間：{settings.get('minutes')}分")
@@ -407,7 +413,7 @@ if room.get("phase") == "playing":
     st.markdown("### ⏳ 残り時間")
     if seconds_left is not None:
         st.markdown(f"## {format_time(seconds_left)}")
-        if seconds_left == 0 and is_host:
+        if seconds_left == 0 and can_manage_game:
             try:
                 latest_room = db_read(room_path(room_code)) or room
                 latest_room["phase"] = "finished"
@@ -449,9 +455,9 @@ if room.get("phase") == "playing":
             st.write(player_info.get("hint") or "ヒント入力待ち…")
 
     st.markdown("### 🧩 並び順を提案")
-    st.caption("ゲームマスターが回答を確定します。名前を小さい数字から順番に選んでください。")
+    st.caption("参加者の中から進行できる人が回答を確定します。名前を小さい数字から順番に選んでください。")
     suggested_order = st.multiselect("小さい数字 → 大きい数字", list(players.keys()))
-    if is_host and st.button("🔒 この順番で答え合わせ", type="primary", use_container_width=True):
+    if can_manage_game and st.button("🔒 この順番で答え合わせ", type="primary", use_container_width=True):
         if len(suggested_order) != len(players):
             st.error("全員を1回ずつ選んでください。")
         else:
@@ -500,7 +506,7 @@ if room.get("phase") == "finished":
             st.info(f"正しい順番：{' → '.join(actual_order)} ／ 位置一致 {exact_positions}/{len(actual_order)}人")
     else:
         st.warning("制限時間終了。ゲームマスターが順番を確定していません。")
-        if is_host and st.button("答え合わせを終了する"):
+        if can_manage_game and st.button("答え合わせを終了する"):
             try:
                 room["result"] = {"order": [], "reason": "time_up", "submitted_at": timestamp()}
                 db_write(room_path(room_code), room)
@@ -508,13 +514,14 @@ if room.get("phase") == "finished":
             except Exception as exc:
                 show_write_error("答え合わせ", exc)
 
-    if is_host and st.button("🔄 同じルームでもう一度遊ぶ"):
+    if can_manage_game and st.button("🔄 同じルームでもう一度遊ぶ"):
         try:
             fresh_room = create_room_data(
-                nickname,
+                room.get("host", nickname),
                 room["settings"]["minutes"],
                 room["settings"]["low"],
                 room["settings"]["high"],
+                room.get("mode", "host_plays"),
             )
             for player_name in players:
                 fresh_room["players"][player_name] = {
