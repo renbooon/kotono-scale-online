@@ -182,31 +182,13 @@ st.markdown(
         color: #ffffff !important;
     }
 
-    /* Streamlit上部ツールバー：右上のShare・星・編集・GitHub・その他のアイコンを明るく表示 */
-    [data-testid="stHeader"] button,
-    [data-testid="stToolbar"] button,
-    [data-testid="stToolbar"] [role="button"],
-    [data-testid="stStatusWidget"] button {
-        color: #f4f6ff !important;
-        opacity: 1 !important;
-        visibility: visible !important;
+    /* 右上の標準ツールバーはStreamlit標準の色に任せ、左上の開閉ボタンだけ白くする */
+    [data-testid="stHeader"] button:not([data-testid="stSidebarCollapsedControl"]),
+    [data-testid="stToolbar"] button:not([data-testid="stSidebarCollapsedControl"]),
+    [data-testid="stToolbar"] [role="button"]:not([data-testid="stSidebarCollapsedControl"]) {
+        filter: none !important;
     }
-    [data-testid="stHeader"] button svg,
-    [data-testid="stToolbar"] button svg,
-    [data-testid="stToolbar"] [role="button"] svg,
-    [data-testid="stStatusWidget"] button svg {
-        color: #f4f6ff !important;
-        fill: #f4f6ff !important;
-        stroke: #f4f6ff !important;
-        opacity: 1 !important;
-        visibility: visible !important;
-        filter: brightness(0) invert(1) !important;
-    }
-    [data-testid="stHeader"] button:hover,
-    [data-testid="stToolbar"] button:hover,
-    [data-testid="stToolbar"] [role="button"]:hover {
-        background-color: #26334f !important;
-    }
+
     /* サイドバーが閉じているときの開閉コントロールも最前面に */
     [data-testid="stSidebarCollapsedControl"],
     [data-testid="collapsedControl"],
